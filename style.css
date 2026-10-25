@@ -1,0 +1,1764 @@
+/* ==========================================================================
+   CV ONLINE — MAULANA RAJU (NIM: 240705166)
+   TEMA: ROBOTIC & CYBERNETIC HUD INTERFACE
+   TEKNOLOGI: 100% PURE HTML5 & CSS3 (Zero Frameworks, Zero External Libraries)
+   S1 Teknologi Informasi, FST UIN Ar-Raniry Banda Aceh
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS & ROBOTIC COLOR MATRIX
+   -------------------------------------------------------------------------- */
+:root {
+  /* Chassis & Panel Colors (Gunmetal & Matte Carbon) */
+  --chassis-deep: #070a10;
+  --chassis-base: #0b101b;
+  --chassis-panel: rgba(14, 21, 35, 0.85);
+  --chassis-surface: rgba(20, 30, 48, 0.7);
+  --chassis-border: rgba(0, 240, 255, 0.22);
+  --chassis-border-dim: rgba(255, 255, 255, 0.08);
+
+  /* Robotic Neon Glow Accents */
+  --hud-cyan: #00f0ff;
+  --hud-cyan-dim: rgba(0, 240, 255, 0.15);
+  --hud-cyan-glow: rgba(0, 240, 255, 0.4);
+
+  --hud-green: #00ff88;
+  --hud-green-dim: rgba(0, 255, 136, 0.15);
+  
+  --hud-yellow: #ffb800;
+  --hud-yellow-dim: rgba(255, 184, 0, 0.15);
+
+  --hud-purple: #c084fc;
+  --hud-purple-dim: rgba(192, 132, 252, 0.15);
+
+  --hud-blue: #38bdf8;
+
+  /* Typography Colors */
+  --text-pure: #ffffff;
+  --text-head: #e2e8f0;
+  --text-body: #94a3b8;
+  --text-dim: #64748b;
+  --text-dark: #334155;
+
+  /* Fonts */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', 'SFMono-Regular', Menlo, Monaco, monospace;
+
+  /* Container */
+  --max-width: 1180px;
+
+  /* Transitions */
+  --trans-fast: 0.15s ease;
+  --trans-smooth: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL FOUNDATIONS & ROBOTIC TECH GRID
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body.robotic-theme {
+  font-family: var(--font-sans);
+  background-color: var(--chassis-deep);
+  color: var(--text-body);
+  line-height: 1.65;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Background Tech Grid Lines (Pure CSS Matrix Pattern) */
+.tech-grid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ambient Sci-Fi Glows */
+.hud-ambient-glow {
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.22;
+}
+
+.glow-cyan {
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, var(--hud-cyan) 0%, transparent 70%);
+  top: -150px;
+  left: -150px;
+}
+
+.glow-blue {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+  bottom: -200px;
+  right: -150px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Typography Base */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-pure);
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin-bottom: 0.85rem;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--hud-cyan);
+  text-decoration: none;
+  transition: all var(--trans-fast);
+}
+
+a:hover {
+  color: #67e8f9;
+  text-shadow: 0 0 8px var(--hud-cyan-glow);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Utilities Colors */
+.text-cyan { color: var(--hud-cyan) !important; }
+.text-green { color: var(--hud-green) !important; }
+.text-yellow { color: var(--hud-yellow) !important; }
+.text-purple { color: var(--hud-purple) !important; }
+.text-muted { color: var(--text-dim) !important; }
+.strong-white { color: var(--text-pure); font-weight: 700; }
+
+/* Custom Tech Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #070a10;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 240, 255, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hud-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   3. ROBOTIC HUD NAVIGATION
+   -------------------------------------------------------------------------- */
+.hud-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7, 10, 16, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--chassis-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.hud-nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-weight: 800;
+}
+
+.hud-tag {
+  color: var(--hud-cyan);
+  font-size: 0.8rem;
+  background: var(--hud-cyan-dim);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+.brand-code {
+  font-size: 1.15rem;
+  color: var(--text-pure);
+  letter-spacing: 0.5px;
+}
+
+.cursor-blink {
+  color: var(--hud-cyan);
+  animation: blinkCursor 1s step-end infinite;
+}
+
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.brand-version {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-left: 0.2rem;
+}
+
+.hud-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.35rem;
+}
+
+.hud-link {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-body);
+  transition: all var(--trans-fast);
+  position: relative;
+  padding: 0.35rem 0;
+}
+
+.nav-num {
+  color: var(--hud-cyan);
+  font-size: 0.7rem;
+  margin-right: 0.15rem;
+}
+
+.hud-link:hover {
+  color: var(--text-pure);
+  text-shadow: 0 0 8px var(--hud-cyan-glow);
+}
+
+.hud-icon {
+  width: 1rem;
+  height: 1rem;
+  vertical-align: middle;
+}
+
+/* --------------------------------------------------------------------------
+   4. ROBOTIC BUTTONS (CHAMFERED CORNER CUTS)
+   -------------------------------------------------------------------------- */
+.hud-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.825rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  line-height: 1;
+  transition: all var(--trans-smooth);
+  position: relative;
+  /* Chamfered Tech Cut Corners */
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.hud-btn-primary {
+  background: var(--hud-cyan);
+  color: #070a10;
+  box-shadow: 0 0 16px var(--hud-cyan-glow);
+}
+.hud-btn-primary:hover {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 0 24px rgba(0, 240, 255, 0.8);
+  transform: translateY(-2px);
+}
+
+.hud-btn-cyan {
+  background: var(--hud-cyan-dim);
+  color: var(--hud-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+}
+.hud-btn-cyan:hover {
+  background: var(--hud-cyan);
+  color: #070a10;
+  box-shadow: 0 0 18px var(--hud-cyan-glow);
+  transform: translateY(-2px);
+}
+
+.hud-btn-outline {
+  background: rgba(14, 21, 35, 0.7);
+  color: var(--hud-cyan);
+  border: 1px solid var(--chassis-border);
+}
+.hud-btn-outline:hover {
+  background: var(--hud-cyan-dim);
+  border-color: var(--hud-cyan);
+  text-shadow: 0 0 8px var(--hud-cyan-glow);
+}
+
+.hud-btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-head);
+  border: 1px solid var(--chassis-border-dim);
+}
+.hud-btn-ghost:hover {
+  border-color: var(--hud-cyan);
+  color: var(--hud-cyan);
+  transform: translateY(-2px);
+}
+
+.btn-bracket {
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: 900;
+}
+.hud-btn-cyan .btn-bracket,
+.hud-btn-ghost .btn-bracket {
+  color: var(--hud-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   5. HERO HUD SECTION & ROBOTIC CHASSIS FRAME
+   -------------------------------------------------------------------------- */
+.hero-hud-section {
+  padding: 2.5rem 0 1.5rem;
+}
+
+.hud-frame {
+  position: relative;
+  background: var(--chassis-panel);
+  border: 1px solid var(--chassis-border);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(0, 240, 255, 0.03);
+  padding: 2.5rem;
+  /* Tech angled corners */
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px));
+}
+
+/* Tech Corner Decorative Brackets */
+.corner-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--hud-cyan);
+  border-style: solid;
+  pointer-events: none;
+}
+.corner-bracket.top-left {
+  top: 6px;
+  left: 6px;
+  border-width: 2px 0 0 2px;
+}
+.corner-bracket.top-right {
+  top: 6px;
+  right: 6px;
+  border-width: 2px 2px 0 0;
+}
+.corner-bracket.bottom-left {
+  bottom: 6px;
+  left: 6px;
+  border-width: 0 0 2px 2px;
+}
+.corner-bracket.bottom-right {
+  bottom: 6px;
+  right: 6px;
+  border-width: 0 2px 2px 0;
+}
+
+.hud-hero-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.75rem;
+  align-items: start;
+}
+
+/* Left: Portrait Frame with Reticle & Scanner */
+.hud-avatar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hud-avatar-box {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  background: #05080f;
+  border: 1px solid var(--hud-cyan);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+  padding: 6px;
+  overflow: hidden;
+}
+
+/* Crosshair Markers (+) */
+.hud-crosshair {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--hud-cyan);
+  line-height: 1;
+  z-index: 5;
+}
+.hud-crosshair.tl { top: 3px; left: 3px; }
+.hud-crosshair.tr { top: 3px; right: 3px; }
+.hud-crosshair.bl { bottom: 28px; left: 3px; }
+.hud-crosshair.br { bottom: 28px; right: 3px; }
+
+/* Pure CSS Scanning Laser Line */
+.hud-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--hud-cyan), transparent);
+  box-shadow: 0 0 8px var(--hud-cyan);
+  z-index: 4;
+  animation: scanLine 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scanLine {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: calc(100% - 30px); opacity: 0; }
+}
+
+.avatar-crop {
+  width: 100%;
+  height: 330px;
+  overflow: hidden;
+  position: relative;
+  background: #090e17;
+}
+
+.hud-profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  transition: transform var(--trans-smooth);
+}
+
+.hud-avatar-box:hover .hud-profile-img {
+  transform: scale(1.04);
+}
+
+.hud-avatar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px 2px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: #090d16;
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.label-tech-id {
+  color: var(--hud-cyan);
+  font-weight: 700;
+}
+
+.label-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--hud-green);
+  font-weight: 700;
+}
+
+.led-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+.led-dot.green {
+  background: var(--hud-green);
+  box-shadow: 0 0 8px var(--hud-green);
+}
+
+.hud-spec-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: rgba(14, 21, 35, 0.9);
+  border: 1px solid var(--chassis-border);
+  padding: 0.35rem 0.85rem;
+  border-radius: 4px;
+}
+.hud-spec-code { color: var(--hud-cyan); font-weight: 700; }
+.hud-spec-text { color: var(--text-head); }
+
+/* Right: Content */
+.hud-meta-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.hud-badge-tech, .hud-badge-code, .hud-badge-term {
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 2px;
+  line-height: 1;
+}
+
+.hud-badge-tech {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--hud-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
+.hud-badge-code {
+  background: rgba(0, 255, 136, 0.1);
+  color: var(--hud-green);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+}
+.hud-badge-term {
+  background: rgba(255, 184, 0, 0.1);
+  color: var(--hud-yellow);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+}
+
+.hud-title-name {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--text-pure);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+.hud-role-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--hud-cyan);
+  margin-bottom: 1.25rem;
+}
+.role-icon {
+  font-weight: 900;
+  color: var(--hud-green);
+}
+
+/* Natural Bio Text (Bukan Bahasa Kaku AI) */
+.hud-natural-bio {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+  margin-bottom: 1.5rem;
+}
+.hud-natural-bio p {
+  margin-bottom: 0.75rem;
+}
+.hud-natural-bio strong {
+  color: #ffffff;
+}
+
+/* Contacts Grid */
+.hud-contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.hud-contact-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 0.85rem;
+  background: rgba(11, 16, 27, 0.8);
+  border: 1px solid var(--chassis-border-dim);
+  border-left: 3px solid var(--hud-cyan);
+  transition: all var(--trans-fast);
+}
+
+.hud-contact-card:hover {
+  background: rgba(0, 240, 255, 0.08);
+  border-color: var(--hud-cyan);
+  transform: translateY(-2px);
+}
+
+.contact-type {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.contact-value {
+  font-family: var(--font-mono);
+  font-size: 0.825rem;
+  color: var(--text-head);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-static:hover {
+  background: rgba(11, 16, 27, 0.8);
+  border-color: var(--chassis-border-dim);
+  transform: none;
+}
+
+.hud-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+/* Panel Footer Status Bar */
+.hud-panel-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--chassis-border-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.sys-telemetry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.tel-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sys-code {
+  color: var(--hud-cyan);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   6. TELEMETRY METRIC BENCHMARKS
+   -------------------------------------------------------------------------- */
+.hud-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.metric-hud-box {
+  background: var(--chassis-panel);
+  border: 1px solid var(--chassis-border-dim);
+  border-top: 2px solid var(--hud-cyan);
+  padding: 1.15rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transition: all var(--trans-fast);
+}
+
+.metric-hud-box:hover {
+  border-top-color: var(--hud-green);
+  background: rgba(20, 30, 48, 0.9);
+  transform: translateY(-2px);
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-bottom: 0.35rem;
+}
+
+.metric-code {
+  color: var(--hud-cyan);
+  font-weight: 700;
+}
+
+.metric-body {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.metric-num {
+  font-family: var(--font-mono);
+  font-size: 1.85rem;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.metric-denom {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.metric-footer {
+  font-size: 0.75rem;
+  color: var(--text-body);
+  margin-top: 0.25rem;
+  font-family: var(--font-sans);
+}
+
+/* --------------------------------------------------------------------------
+   7. MAIN FEED TWO COLUMNS LAYOUT
+   -------------------------------------------------------------------------- */
+.main-content-wrap {
+  padding-bottom: 4rem;
+  margin-top: 2rem;
+}
+
+.main-two-columns {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Robotic Module Box (Universal Card) */
+.hud-module-box {
+  background: var(--chassis-panel);
+  border: 1px solid var(--chassis-border-dim);
+  border-left: 3px solid var(--hud-cyan);
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.module-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(7, 10, 16, 0.85);
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--chassis-border-dim);
+}
+
+.mod-icon {
+  font-family: var(--font-mono);
+  color: var(--hud-cyan);
+  font-weight: 900;
+  margin-right: 0.4rem;
+}
+
+.mod-heading {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  flex-grow: 1;
+  letter-spacing: 0.5px;
+}
+
+.mod-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--hud-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 2px;
+}
+
+.badge-green {
+  background: rgba(0, 255, 136, 0.1);
+  color: var(--hud-green);
+  border-color: rgba(0, 255, 136, 0.3);
+}
+
+.module-content {
+  padding: 1.35rem;
+}
+
+.section-intro-text {
+  font-size: 0.925rem;
+  color: var(--text-head);
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   8. SIDEBAR CONTENT (BIODATA TABLE, SKILLS, HOBI)
+   -------------------------------------------------------------------------- */
+.hud-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.hud-data-table td {
+  padding: 0.55rem 0.25rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+  vertical-align: top;
+}
+
+.hud-data-table .key {
+  color: var(--text-dim);
+  font-weight: 700;
+  width: 38%;
+  font-size: 0.72rem;
+}
+
+.hud-data-table .sep {
+  color: var(--hud-cyan);
+  width: 5%;
+}
+
+.hud-data-table .val {
+  color: var(--text-head);
+  line-height: 1.4;
+}
+
+/* Skill Meters */
+.skill-hud-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.skill-hud-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.skill-header-tech {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.tech-name {
+  font-weight: 700;
+  color: var(--text-pure);
+}
+
+.tech-level {
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.hud-meter-track {
+  width: 100%;
+  height: 6px;
+  background: #070a10;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.hud-meter-fill {
+  height: 100%;
+  transition: width 0.8s ease;
+}
+
+.fill-cyan { background: var(--hud-cyan); box-shadow: 0 0 8px var(--hud-cyan); }
+.fill-green { background: var(--hud-green); box-shadow: 0 0 8px var(--hud-green); }
+.fill-yellow { background: var(--hud-yellow); box-shadow: 0 0 8px var(--hud-yellow); }
+.fill-purple { background: var(--hud-purple); box-shadow: 0 0 8px var(--hud-purple); }
+
+.skill-note {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  margin-top: 0.15rem;
+}
+
+/* Chips & Tags */
+.tech-block-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--hud-cyan);
+  margin-top: 1.35rem;
+  margin-bottom: 0.65rem;
+  letter-spacing: 0.5px;
+}
+
+.hud-chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.hud-chip {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  color: #38bdf8;
+  border-radius: 2px;
+}
+
+.chip-soft {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--chassis-border-dim);
+  color: var(--text-head);
+}
+
+/* Languages */
+.hud-lang-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.lang-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 0.45rem 0.65rem;
+  background: #090e18;
+  border: 1px solid var(--chassis-border-dim);
+}
+
+.lang-name {
+  color: var(--text-pure);
+  font-weight: 700;
+}
+
+/* Hobbies */
+.hud-hobby-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.hobby-hud-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.7rem;
+  background: #090e18;
+  border: 1px solid var(--chassis-border-dim);
+}
+
+.hobby-ico-tech {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--hud-cyan);
+}
+
+.hobby-label {
+  font-size: 0.85rem;
+  color: var(--text-pure);
+  display: block;
+}
+
+.hobby-desc {
+  font-size: 0.785rem;
+  color: var(--text-body);
+  line-height: 1.45;
+  margin-top: 0.15rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. FEED CONTENT (MAIN COLUMN)
+   -------------------------------------------------------------------------- */
+.feed-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.natural-prose p {
+  font-size: 0.96rem;
+  line-height: 1.75;
+  color: #cbd5e1;
+}
+.natural-prose strong {
+  color: #ffffff;
+}
+
+.hud-quote-box {
+  margin-top: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: rgba(0, 240, 255, 0.04);
+  border-left: 3px solid var(--hud-cyan);
+  border-top: 1px solid var(--chassis-border-dim);
+  border-right: 1px solid var(--chassis-border-dim);
+  border-bottom: 1px solid var(--chassis-border-dim);
+}
+
+.quote-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--hud-cyan);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.quote-text {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-head);
+  line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   10. TRANSKRIP AKADEMIK COURSES GRID
+   -------------------------------------------------------------------------- */
+.hud-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.hud-course-card {
+  background: #090e18;
+  border: 1px solid var(--chassis-border-dim);
+  padding: 1.15rem;
+  transition: all var(--trans-fast);
+}
+
+.hud-course-card:hover {
+  border-color: var(--hud-green);
+  background: rgba(14, 21, 35, 0.9);
+  transform: translateY(-2px);
+}
+
+.c-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.c-code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.c-grade {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+}
+
+.grade-a {
+  background: rgba(0, 255, 136, 0.15);
+  color: var(--hud-green);
+  border: 1px solid rgba(0, 255, 136, 0.35);
+}
+
+.grade-a-minus {
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--hud-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+}
+
+.c-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  margin-bottom: 0.35rem;
+  font-family: var(--font-mono);
+}
+
+.c-meta {
+  font-size: 0.8rem;
+  color: var(--text-body);
+  line-height: 1.45;
+}
+
+/* Academic Summary Banner */
+.hud-academic-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: #070a10;
+  border: 1px solid var(--chassis-border);
+}
+
+.sum-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.sum-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.sum-val {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-pure);
+  font-weight: 700;
+}
+
+.sum-box.highlight .sum-val {
+  font-size: 1.35rem;
+}
+
+/* --------------------------------------------------------------------------
+   11. SERTIFIKASI RESMI STACK
+   -------------------------------------------------------------------------- */
+.hud-cert-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.hud-cert-card {
+  display: flex;
+  background: #090e18;
+  border: 1px solid var(--chassis-border-dim);
+  transition: all var(--trans-smooth);
+}
+
+.hud-cert-card:hover {
+  border-color: var(--hud-cyan);
+  background: rgba(14, 21, 35, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+.cert-indicator {
+  width: 5px;
+  flex-shrink: 0;
+}
+.cert-indicator.yellow { background: var(--hud-yellow); }
+.cert-indicator.cyan { background: var(--hud-cyan); }
+.cert-indicator.green { background: var(--hud-green); }
+
+.cert-main {
+  padding: 1.35rem;
+  flex-grow: 1;
+}
+
+.cert-category {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.5px;
+}
+
+.cert-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  margin-bottom: 0.4rem;
+  font-family: var(--font-mono);
+}
+
+.cert-organizer {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--hud-cyan);
+  margin-bottom: 0.65rem;
+}
+
+.cert-explanation {
+  font-size: 0.885rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.cert-meta-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--chassis-border-dim);
+}
+
+/* --------------------------------------------------------------------------
+   12. TIMELINE PENDIDIKAN
+   -------------------------------------------------------------------------- */
+.hud-timeline {
+  position: relative;
+  padding-left: 1.75rem;
+}
+
+.hud-timeline::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 5px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--hud-cyan), var(--chassis-border-dim));
+}
+
+.hud-timeline-item {
+  position: relative;
+  margin-bottom: 1.85rem;
+}
+.hud-timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.tl-marker {
+  position: absolute;
+  top: 6px;
+  left: -1.75rem;
+  width: 12px;
+  height: 12px;
+  background: var(--chassis-deep);
+  border: 2px solid var(--text-dim);
+}
+
+.marker-active {
+  border-color: var(--hud-cyan);
+  background: var(--hud-cyan);
+  box-shadow: 0 0 10px var(--hud-cyan);
+}
+
+.tl-card {
+  background: #090e18;
+  border: 1px solid var(--chassis-border-dim);
+  padding: 1.25rem;
+}
+
+.tl-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tl-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: block;
+}
+
+.tl-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+}
+
+.tl-sub {
+  font-size: 0.85rem;
+  color: var(--text-head);
+}
+
+.tl-date {
+  font-family: var(--font-mono);
+  font-size: 0.785rem;
+  font-weight: 700;
+  color: var(--hud-cyan);
+  background: var(--hud-cyan-dim);
+  padding: 0.25rem 0.65rem;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+.tl-desc p {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  margin-bottom: 0.6rem;
+}
+
+.tl-bullet-list {
+  padding-left: 1.25rem;
+  list-style: disc;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tl-bullet-list strong {
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   13. PORTOFOLIO PROYEK GRID
+   -------------------------------------------------------------------------- */
+.hud-project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.hud-project-card {
+  background: #090e18;
+  border: 1px solid var(--chassis-border-dim);
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--trans-smooth);
+}
+
+.hud-project-card:hover {
+  border-color: var(--hud-cyan);
+  background: rgba(14, 21, 35, 0.9);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+.p-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  margin-bottom: 0.65rem;
+}
+
+.p-category {
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.p-year {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.p-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-mono);
+}
+
+.p-desc {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.55;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.p-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.pt {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--text-head);
+  border: 1px solid var(--chassis-border-dim);
+}
+
+.p-link-box {
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--chassis-border-dim);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.p-status {
+  font-weight: 700;
+}
+
+.p-action-link {
+  font-weight: 700;
+  color: var(--hud-cyan);
+}
+.p-action-link:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   14. FORMULIR HUBUNGI SAYA
+   -------------------------------------------------------------------------- */
+.hud-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem;
+}
+
+.hud-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field-tech-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-head);
+  letter-spacing: 0.5px;
+}
+
+.req {
+  color: #ef4444;
+}
+
+.hud-text-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: #ffffff;
+  background: #070a10;
+  border: 1px solid var(--chassis-border-dim);
+  border-left: 2px solid var(--hud-cyan);
+  outline: none;
+  transition: all var(--trans-fast);
+}
+
+.hud-text-input:focus {
+  border-color: var(--hud-cyan);
+  box-shadow: 0 0 12px var(--hud-cyan-glow);
+  background: #090e18;
+}
+
+.hud-text-input::placeholder {
+  color: #475569;
+}
+
+.hud-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.btn-submit-wide {
+  align-self: flex-start;
+  padding: 0.85rem 1.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   15. HUD FOOTER
+   -------------------------------------------------------------------------- */
+.hud-footer {
+  background: #05080e;
+  border-top: 1px solid var(--chassis-border);
+  padding: 2.25rem 0;
+}
+
+.footer-hud-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.foot-title {
+  font-family: var(--font-mono);
+  font-size: 0.925rem;
+  color: var(--text-pure);
+  margin-bottom: 0.25rem;
+}
+
+.foot-sub {
+  font-size: 0.825rem;
+  color: var(--text-body);
+  margin-bottom: 0.2rem;
+}
+
+.foot-tech {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.btn-return-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.return-arrow {
+  color: var(--hud-cyan);
+  font-weight: 900;
+}
+
+/* --------------------------------------------------------------------------
+   16. RESPONSIVE DESIGN (TABLET & SMARTPHONE)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .main-two-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .hud-hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hud-avatar-column {
+    margin: 0 auto;
+  }
+
+  .hud-meta-header {
+    justify-content: center;
+  }
+
+  .hud-role-strip {
+    justify-content: center;
+  }
+
+  .hud-contacts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hud-cta-row {
+    justify-content: center;
+  }
+
+  .hud-panel-footer {
+    justify-content: center;
+  }
+
+  .hud-metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hud-academic-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sidebar-column {
+    order: 2;
+  }
+
+  .feed-column {
+    order: 1;
+  }
+}
+
+@media (max-width: 680px) {
+  .hud-navbar {
+    height: auto;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .hud-nav-container {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .hud-nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem 0.95rem;
+  }
+
+  .hud-actions {
+    display: none;
+  }
+
+  .hud-title-name {
+    font-size: 2rem;
+  }
+
+  .hud-frame {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .hud-metrics-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hud-courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hud-project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hud-academic-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-hud-grid {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .btn-submit-wide {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   17. PRINT MEDIA QUERY (@media print)
+   Khusus ketika menekan tombol CETAK_CV.PDF atau Ctrl + P
+   -------------------------------------------------------------------------- */
+@media print {
+  /* Hilangkan efek sci-fi, navbar, form, dan tombol yang tidak relevan di kertas */
+  .hud-navbar,
+  .tech-grid-overlay,
+  .hud-ambient-glow,
+  .hud-scan-line,
+  .hud-cta-row,
+  .hud-form,
+  .hud-footer,
+  .hud-panel-footer,
+  .p-link-box {
+    display: none !important;
+  }
+
+  body.robotic-theme {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10.5pt;
+    line-height: 1.4;
+  }
+
+  .hero-hud-section {
+    padding: 0 !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .hud-frame {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    clip-path: none !important;
+  }
+
+  .hud-hero-grid {
+    grid-template-columns: 180px 1fr !important;
+    gap: 1.5rem !important;
+    text-align: left !important;
+  }
+
+  .hud-avatar-box {
+    border: 1px solid #333333 !important;
+    box-shadow: none !important;
+  }
+
+  .hud-title-name {
+    font-size: 1.75rem !important;
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  .hud-role-strip {
+    color: #333333 !important;
+  }
+
+  .hud-natural-bio, .natural-prose p, .tl-desc p, .cert-explanation, .p-desc {
+    color: #222222 !important;
+  }
+
+  .hud-contact-card, .metric-hud-box, .hud-module-box, .hud-course-card, .hud-cert-card, .tl-card, .hud-project-card {
+    background: #ffffff !important;
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    color: #000000 !important;
+  }
+
+  h1, h2, h3, h4, h5, h6, strong, .strong-white {
+    color: #000000 !important;
+  }
+
+  .main-two-columns {
+    grid-template-columns: 260px 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  .hud-meter-track {
+    background: #e2e8f0 !important;
+  }
+
+  .hud-meter-fill {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .hud-timeline::before {
+    background: #888888 !important;
+  }
+
+  .tl-marker {
+    background: #333333 !important;
+    border-color: #000000 !important;
+  }
+}

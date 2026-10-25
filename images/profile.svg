@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbd38d" />
+      <stop offset="100%" stop-color="#f6ad55" />
+    </linearGradient>
+    <linearGradient id="shirtGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background Circle with Gradient -->
+  <circle cx="200" cy="200" r="190" fill="url(#bgGradient)" />
+
+  <!-- Inner Soft Glow -->
+  <circle cx="200" cy="200" r="180" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.3" />
+
+  <!-- Character Group -->
+  <g filter="url(#softShadow)">
+    <!-- Clothes / Hoodie / Shirt -->
+    <path d="M100 360 C110 290 145 265 200 265 C255 265 290 290 300 360 Z" fill="url(#shirtGrad)" />
+    <!-- Collar Detail -->
+    <path d="M170 268 L200 305 L230 268 C220 280 180 280 170 268 Z" fill="#334155" />
+    <path d="M185 272 L200 302 L215 272 Z" fill="#ffffff" opacity="0.8" />
+
+    <!-- Neck -->
+    <rect x="180" y="225" width="40" height="50" rx="8" fill="url(#skinGrad)" />
+    <!-- Neck shadow under chin -->
+    <path d="M180 230 C190 245 210 245 220 230 Z" fill="#ed8936" opacity="0.4" />
+
+    <!-- Head / Face -->
+    <ellipse cx="200" cy="180" rx="60" ry="68" fill="url(#skinGrad)" />
+
+    <!-- Ears -->
+    <ellipse cx="138" cy="180" rx="10" ry="16" fill="url(#skinGrad)" />
+    <ellipse cx="262" cy="180" rx="10" ry="16" fill="url(#skinGrad)" />
+    <ellipse cx="139" cy="180" rx="5" ry="9" fill="#ed8936" opacity="0.4" />
+    <ellipse cx="261" cy="180" rx="5" ry="9" fill="#ed8936" opacity="0.4" />
+
+    <!-- Hair (Back/Base) -->
+    <path d="M135 170 C130 115 160 90 200 90 C245 90 270 115 265 170 C258 150 250 140 240 135 C220 125 180 125 160 135 C150 140 142 150 135 170 Z" fill="#1e1e24" />
+
+    <!-- Hair (Modern Stylish Front) -->
+    <path d="M138 155 C145 120 170 100 205 98 C240 96 265 115 263 150 C250 130 230 120 200 122 C170 124 150 138 138 155 Z" fill="#2d3748" />
+    <!-- Hair Strands / Volume -->
+    <path d="M155 118 C175 95 215 90 240 108 C225 102 185 100 165 115 Z" fill="#4a5568" />
+
+    <!-- Eyebrows -->
+    <path d="M165 160 Q180 154 192 160" stroke="#1e293b" stroke-width="4" stroke-linecap="round" fill="none" />
+    <path d="M208 160 Q220 154 235 160" stroke="#1e293b" stroke-width="4" stroke-linecap="round" fill="none" />
+
+    <!-- Eyes -->
+    <ellipse cx="178" cy="173" rx="5" ry="6" fill="#1e293b" />
+    <circle cx="176" cy="171" r="1.8" fill="#ffffff" />
+    <ellipse cx="222" cy="173" rx="5" ry="6" fill="#1e293b" />
+    <circle cx="220" cy="171" r="1.8" fill="#ffffff" />
+
+    <!-- Modern Glasses (Smart Tech Look) -->
+    <rect x="156" y="160" width="38" height="26" rx="6" fill="none" stroke="#0ea5e9" stroke-width="3" />
+    <rect x="206" y="160" width="38" height="26" rx="6" fill="none" stroke="#0ea5e9" stroke-width="3" />
+    <!-- Glasses Bridge -->
+    <path d="M194 171 L206 171" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round" />
+    <!-- Glasses Temple (Sides) -->
+    <path d="M156 168 L140 166" stroke="#0ea5e9" stroke-width="2.5" />
+    <path d="M244 168 L260 166" stroke="#0ea5e9" stroke-width="2.5" />
+
+    <!-- Nose -->
+    <path d="M198 178 Q200 188 203 188" stroke="#dd6b20" stroke-width="2.5" stroke-linecap="round" fill="none" />
+
+    <!-- Friendly Smile -->
+    <path d="M185 204 Q200 216 215 204" stroke="#c53030" stroke-width="3" stroke-linecap="round" fill="none" />
+
+    <!-- Cheerful Cheeks -->
+    <circle cx="162" cy="190" r="7" fill="#f56565" opacity="0.2" />
+    <circle cx="238" cy="190" r="7" fill="#f56565" opacity="0.2" />
+  </g>
+
+  <!-- Modern Floating Code Badge -->
+  <g transform="translate(45, 60)">
+    <rect width="64" height="34" rx="8" fill="#0f172a" opacity="0.9" />
+    <text x="32" y="22" font-family="'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="14" fill="#38bdf8" text-anchor="middle">&lt;dev/&gt;</text>
+  </g>
+
+  <!-- Modern Floating Star Badge -->
+  <g transform="translate(290, 70)">
+    <circle cx="22" cy="22" r="22" fill="#0f172a" opacity="0.9" />
+    <text x="22" y="27" font-family="'Segoe UI', Roboto, sans-serif" font-size="16" fill="#facc15" text-anchor="middle">⚡</text>
+  </g>
+</svg>
